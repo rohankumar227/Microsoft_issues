@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raspberry Pi Code Demonstrations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            width: 80%;
+            margin: 20px auto;
+        }
+        h2 {
+            color: #333;
+        }
+        .code-container {
+            position: relative;
+            background: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #007BFF;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .copy-btn:hover {
+            background: #0056b3;
+        }
+    </style>
+    <script>
+        function copyCode(button, id) {
+            let codeBlock = document.getElementById(id);
+            navigator.clipboard.writeText(codeBlock.innerText).then(() => {
+                button.innerText = "Copied!";
+                setTimeout(() => { button.innerText = "Copy"; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+
+    <h2>Q) Demonstrate Raspberry Pi and its pin interfacing with IDE</h2>
+    <div class="code-container">
+        <button class="copy-btn" onclick="copyCode(this, 'code1')">Copy</button>
+        <pre id="code1">from gpiozero import LED
+import time
+
+led = LED(4)
+
+for _ in range(10):
+    led.on()
+    print("Led on")
+    time.sleep(1)
+    led.off()
+    print("Led off")
+    time.sleep(1)
+        </pre>
+    </div>
+
+    <h2>Q) GPIO: Light the LED with Python without a button using Raspberry Pi</h2>
+    <h3>1) Without Button:</h3>
+    <div class="code-container">
+        <button class="copy-btn" onclick="copyCode(this, 'code2')">Copy</button>
+        <pre id="code2">import RPi.GPIO as GPIO
+from time import sleep
+
+GPIO.setmode(GPIO.BCM)
+LedPin = 4
+GPIO.setup(LedPin, GPIO.OUT)
+
+try:
+    while True:
+        GPIO.output(LedPin, True)
+        print("LED ON")
+        sleep(0.55)
+        GPIO.output(LedPin, False)
+        print("LED OFF")
+        sleep(0.45)
+except KeyboardInterrupt:
+    pass
+finally:
+    GPIO.output(LedPin, False)
+    GPIO.cleanup()
+        </pre>
+    </div>
+
+    <h3>2) With Button:</h3>
+    <div class="code-container">
+        <button class="copy-btn" onclick="copyCode(this, 'code3')">Copy</button>
+        <pre id="code3">import RPi.GPIO as GPIO
+import time
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(23, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(24, GPIO.OUT)
+
+try:
+    while True:
+        button_state = GPIO.input(23)
+        print("Running")
+        if button_state == False:
+            GPIO.output(24, True)
+            print("Button pressed...")
+            time.sleep(0.3)
+        else:
+            GPIO.output(24, False)
+except KeyboardInterrupt:
+    pass
+finally:
+    GPIO.cleanup()
+        </pre>
+    </div>
+
+    <h2>Aim: SPI - Camera Connection and Capturing Images/Videos</h2>
+    <div class="code-container">
+        <button class="copy-btn" onclick="copyCode(this, 'code4')">Copy</button>
+        <pre id="code4">from picamera2 import Picamera2, Preview
+import time
+
+camera = Picamera2()
+camera_config = camera.create_preview_configuration(main={"size": (2048, 1536)})
+
+camera.configure(camera_config)
+camera.start_preview(Preview.QTGL)
+
+camera.start()
+print("Previewing")
+
+time.sleep(5)
+camera.capture_file("captured_image.jpg")
+
+print("Picture Saved")
+camera.stop_preview()
+camera.stop()
+        </pre>
+    </div>
+
+    <h2>Aim: Stepper Motor Control - PWM to Manage Stepper Motor Speed</h2>
+    <div class="code-container">
+        <button class="copy-btn" onclick="copyCode(this, 'code5')">Copy</button>
+        <pre id="code5">import RPi.GPIO as GPIO
+import time
+
+IN1 = 23
+IN2 = 24
+IN3 = 25
+IN4 = 8
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(IN1, GPIO.OUT)
+GPIO.setup(IN2, GPIO.OUT)
+GPIO.setup(IN3, GPIO.OUT)
+GPIO.setup(IN4, GPIO.OUT)
+
+Seq = [
+    [1, 0, 0, 0],
+    [1, 1, 0, 0],
+    [0, 1, 0, 0],
+    [0, 1, 1, 0],
+    [0, 0, 1, 0],
+    [0, 0, 1, 1],
+    [0, 0, 0, 1],
+    [1, 0, 0, 1]
+]
+
+def rotate_motor(delay, steps):
+    for _ in range(steps):
+        for step in Seq:
+            GPIO.output(IN1, step[0])
+            GPIO.output(IN2, step[1])
+            GPIO.output(IN3, step[2])
+            GPIO.output(IN4, step[3])
+            time.sleep(delay)
+
+try:
+    print("Rotating motor clockwise...")
+    rotate_motor(0.002, 512)
+    time.sleep(1)
+
+    print("Rotating motor counterclockwise...")
+    Seq.reverse()
+    rotate_motor(0.002, 512)
+
+except KeyboardInterrupt:
+    print("\nExiting...")
+
+finally:
+    GPIO.cleanup()
+        </pre>
+    </div>
+
+    <h2>Aim: Use Different Types of Sensors (LDR, Temperature) with Raspberry Pi</h2>
+    <div class="code-container">
+        <button class="copy-btn" onclick="copyCode(this, 'code6')">Copy</button>
+        <pre id="code6">import RPi.GPIO as GPIO
+import time
+
+GPIO.setmode(GPIO.BCM)
+
+LIGHT_SENSOR_PIN = 15
+LED_PIN = 12
+
+GPIO.setup(LIGHT_SENSOR_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(LED_PIN, GPIO.OUT)
+
+try:
+    while True:
+        light_state = GPIO.input(LIGHT_SENSOR_PIN)
+
+        if light_state == GPIO.LOW:
+            GPIO.output(LED_PIN, GPIO.LOW)
+            print("Light is present, turn off the LED")
+        else:
+            GPIO.output(LED_PIN, GPIO.HIGH)
+            print("Light is not present, turn on the LED")
+
+        time.sleep(1)
+
+except KeyboardInterrupt:
+    GPIO.cleanup()
+        </pre>
+    </div>
+
+</body>
+</html>
