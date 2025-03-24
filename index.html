@@ -352,6 +352,97 @@ except KeyboardInterrupt:
 
       
       </div>
+    
+  <h2>Trigger a set of led GPIO on any IoT platform via any related web server</h2>
+
+  <div class="code-container">
+    <button class="copy-btn" onclick="copyCode(this, 'code12')">Copy</button>
+    <pre id="code12">
+  import RPi.GPIO as GPIO 
+  import os 
+  from http.server import BaseHTTPRequestHandler, HTTPServer 
+  import urllib.parse 
+  
+  HOST_NAME = '192.168.0.112' 
+  HOST_PORT = 8000 
+  LED1_PIN = 18 
+  LED2_PIN = 23 
+  
+  def setupGPIO(): 
+      GPIO.setmode(GPIO.BCM) 
+      GPIO.setwarnings(False) 
+      GPIO.setup(LED1_PIN, GPIO.OUT) 
+      GPIO.setup(LED2_PIN, GPIO.OUT) 
+  
+  def getTemperature(): 
+      return os.popen("/opt/vc/bin/vcgencmd measure_temp").read().strip() 
+  
+  class MyServer(BaseHTTPRequestHandler): 
+      def do_HEAD(self): 
+          self.send_response(200) 
+          self.send_header('Content-type', 'text/html') 
+          self.end_headers() 
+  
+      def _redirect(self, path): 
+          self.send_response(303) 
+          self.send_header('Content-type', 'text/html') 
+          self.send_header('Location', path) 
+          self.end_headers() 
+  
+      def do_GET(self): 
+          self.do_HEAD() 
+          temperature = getTemperature() 
+          html = f""" 
+          &lt;html&gt; 
+              &lt;head&gt;&lt;title&gt;Raspberry Pi LED Control&lt;/title&gt;&lt;/head&gt; 
+              &lt;body style=&quot;width:960px; margin:20px auto;&quot;&gt; 
+                  &lt;h1&gt;Welcome to my Raspberry Pi&lt;/h1&gt; 
+                  &lt;h2&gt;Temperature: {temperature}&lt;/h2&gt; 
+                  &lt;form action=&quot;/&quot; method=&quot;POST&quot;&gt; 
+                      &lt;h3&gt;Control LED 1&lt;/h3&gt; 
+                      &lt;button type=&quot;submit&quot; name=&quot;led&quot; value=&quot;LED1 On&quot;&gt;Turn LED 1 On&lt;/button&gt; 
+                      &lt;button type=&quot;submit&quot; name=&quot;led&quot; value=&quot;LED1 Off&quot;&gt;Turn LED 1 Off&lt;/button&gt; 
+                      &lt;h3&gt;Control LED 2&lt;/h3&gt; 
+                      &lt;button type=&quot;submit&quot; name=&quot;led&quot; value=&quot;LED2 On&quot;&gt;Turn LED 2 On&lt;/button&gt; 
+                      &lt;button type=&quot;submit&quot; name=&quot;led&quot; value=&quot;LED2 Off&quot;&gt;Turn LED 2 Off&lt;/button&gt; 
+                  &lt;/form&gt; 
+              &lt;/body&gt; 
+          &lt;/html&gt; 
+          """ 
+          self.wfile.write(html.encode("utf-8")) 
+  
+      def do_POST(self): 
+          content_length = int(self.headers['Content-Length']) 
+          post_data = self.rfile.read(content_length) 
+          data = urllib.parse.parse_qs(post_data.decode('utf-8')) 
+          if 'led' in data: 
+              action = data['led'][0] 
+              if action == 'LED1 On': 
+                  GPIO.output(LED1_PIN, GPIO.HIGH) 
+              elif action == 'LED1 Off': 
+                  GPIO.output(LED1_PIN, GPIO.LOW) 
+              elif action == 'LED2 On': 
+                  GPIO.output(LED2_PIN, GPIO.HIGH) 
+              elif action == 'LED2 Off': 
+                  GPIO.output(LED2_PIN, GPIO.LOW) 
+              self._redirect('/') 
+  
+  if __name__ == '__main__': 
+      setupGPIO() 
+      server = HTTPServer((HOST_NAME, HOST_PORT), MyServer) 
+      print(f"Server started at http://{HOST_NAME}:{HOST_PORT}") 
+      try: 
+          server.serve_forever() 
+      except KeyboardInterrupt: 
+          GPIO.cleanup() 
+          server.server_close() 
+          print("\nServer stopped")
+    </pre>
+  </div>
+  
+
+  
+  
     </div>
   </body>
 </html>
