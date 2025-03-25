@@ -246,18 +246,151 @@ fun main() {
     <div class="code-container">
       <button class="copy-btn" onclick="copyCode(this, 'code2')">Copy</button>
       <pre id="code2">
-from gpiozero import LED
-import time
+fun main() {
+    val list = listOf(1, 2, 3, 4, 5)
+    println("Immutable List: $list")
 
-led = LED(4)
+    val mutableList = mutableListOf(1, 2, 3)
+    mutableList.add(4)
+    mutableList.remove(2)
+    println("Mutable List after modifications: $mutableList")
 
-for _ in range(10):
-    led.on()
-    print("Led on")
-    time.sleep(1)
-    led.off()
-    print("Led off")
-    time.sleep(1)
+    val set = setOf(1, 2, 3, 3, 4)
+    println("Immutable Set (duplicates removed): $set")
+
+    val mutableSet = mutableSetOf(1, 2, 3)
+    mutableSet.add(4)
+    mutableSet.remove(2)
+    println("Mutable Set after modifications: $mutableSet")
+
+    val map = mapOf(1 to "one", 2 to "two", 3 to "three")
+    println("Immutable Map: $map")
+
+    val mutableMap = mutableMapOf(1 to "one", 2 to "two")
+    mutableMap[3] = "three"
+    mutableMap.remove(1)
+    println("Mutable Map after modifications: $mutableMap")
+
+    println("\nIterating over List:")
+    for (item in list) {
+        println(item)
+    }
+
+    val evenNumbers = list.filter { it % 2 == 0 }
+    println("\nFiltered (Even Numbers): $evenNumbers")
+
+    val doubled = list.map { it * 2 }
+    println("\nMapped (Doubled Numbers): $doubled")
+
+    val grouped = list.groupBy { it % 2 == 0 }
+    println("\nGrouped by Even/Odd: $grouped")
+
+    val sum = list.reduce { acc, i -> acc + i }
+    println("\nSum of elements in the List: $sum")
+
+    val nullableList: List&ltInt?> = listOf(1, 2, null, 4)
+    val nonNullList = nullableList.filterNotNull()
+    println("\nNullable List (Null values removed): $nonNullList")
+
+    println("\nUsing forEach to print elements:")
+    list.forEach { println(it) }
+
+    val total = list.sum()
+    println("\nSum using extension function: $total")
+}
+
+XML
+&lt?xml version="1.0" encoding="utf-8"?>
+&gtLinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center"&gt
+
+    <!-- Title TextView -->
+    &ltTextView
+        android:id="@+id/titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UI Elements Example"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="20dp"
+        android:gravity="center" />
+
+    <!-- EditText for user input -->
+    &ltEditText
+        android:id="@+id/inputEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter text here"
+        android:padding="10dp"
+        android:layout_marginBottom="20dp"
+        android:inputType="text" />
+
+    <!-- Radio Buttons -->
+    &ltRadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="20dp">
+
+        &ltRadioButton
+            android:id="@+id/radioButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Option 1" />
+
+        &ltRadioButton
+            android:id="@+id/radioButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Option 2" />
+        &lt/RadioGroup&gt
+
+    <!-- Button -->
+    &ltButton
+        android:id="@+id/submitButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:layout_marginTop="20dp"/>
+&lt/LinearLayout>
+ 
+Kotlin:
+
+private lateinit var inputEditText: EditText
+private lateinit var radioGroup: RadioGroup
+private lateinit var submitButton: Button
+private lateinit var titleText: TextView
+
+override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.activity)
+
+    inputEditText = findViewById(R.id.inputEditText)
+    radioGroup = findViewById(R.id.radioGroup)
+    submitButton = findViewById(R.id.submitButton)
+    titleText = findViewById(R.id.titleText)
+
+    submitButton.setOnClickListener {
+        val userInput = inputEditText.text.toString()
+        val selectedRadioButtonId = radioGroup.checkedRadioButtonId
+        val selectedRadioButton = findViewById&ltRadioButton&gt(selectedRadioButtonId)
+        val radioButtonText = selectedRadioButton?.text.toString()
+
+        Toast.makeText(
+            this,
+            "Text: $userInput\nSelected Option: $radioButtonText",
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+}
+
+          
         </pre
       >
     </div>
