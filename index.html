@@ -237,7 +237,227 @@ fun main() {
 
     println("Merged Array: ${mergedArray.joinToString(", ")}")
 }
-          
+   Kotlin
+
+package com.example.andp5
+
+import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.CheckBox
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import android.widget.Spinner
+import android.widget.Toast
+import androidx.activity.ComponentActivity
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        val checkBox = findViewById&lt CheckBox&gt(R.id.checkBox)
+        checkBox.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                Toast.makeText(this, "Checkbox Checked", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Checkbox Unchecked", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        val radioGroup = findViewById&lt RadioGroup&gt(R.id.radioGroup)
+        radioGroup.setOnCheckedChangeListener { _, checkedId ->
+            val radioButton = findViewById&lt RadioButton&gt(checkedId)
+            Toast.makeText(this, "Selected: ${radioButton.text}", Toast.LENGTH_SHORT).show()
+        }
+
+        val button = findViewById&lt Button&gt(R.id.button)
+        button.setOnClickListener {
+            Toast.makeText(this, "Button Clicked", Toast.LENGTH_SHORT).show()
+        }
+
+        val spinner = findViewById&lt Spinner&gt(R.id.spinner)
+        val items = arrayOf("Option A", "Option B", "Option C")
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = adapter
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parentView: AdapterView&lt *&gt, view: View?, position: Int, id: Long) {
+                Toast.makeText(this@MainActivity, "Selected: ${items[position]}", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onNothingSelected(parentView: AdapterView&lt *&gt) {}
+        }
+    }
+}
+
+XML
+
+&lt?xml version="1.0" encoding="utf-8"&gt  
+&ltLinearLayout xmlns androida.ancencorozapk/res/andinsdzam  
+    android orientation="vertical"  
+    android layout width="match parent"  
+    android layout height="match parent"&gt  
+
+    &ltCheckBox  
+        android:id="@+id/checkBox"  
+        android layout width="wrap content"  
+        android:layout height="wrap_content  
+        android:text="Check me!" /&gt  
+
+    &ltRadioGroup  
+        android:id="@+id/radioGroup"  
+        android:layout_width="wrap_content"  
+        android layout height="wrap_content"  
+        android:orientation="vertical"&gt  
+
+        &ltRadioButton  
+            android:id="@+id/radioButton1"  
+            android:layout_width="wrap_content"  
+            android layout height="wrap_content"  
+            android:text="Option 1"/&gt  
+
+        &ltRadioButton  
+            android:id="@+id/radioButton2"  
+            android:layout_width="wrap_content"  
+            android layout height="wrap_content"  
+            android:text="Option 2"/&gt  
+
+    &lt/RadioGroup&gt  
+
+    &ltButton  
+        android:id="@+id/button  
+        android:layout_width="wrap_content"  
+        android:layout_height="wrap_content"  
+        android:text="Submit" /&gt  
+
+    &ltSpinner  
+        android:id="@+id/spinner"  
+        android:layout_width="wrap_content"  
+        android:layout_height="wrap_content" /&gt  
+
+&lt/LinearLayout&gt  
+
+Kotlin:
+
+open class Employee(val name: String, val salary: Double) {
+    open fun displayInfo() {
+        println("Name: $name, Salary: $$salary")
+    }
+}
+class Manager(name: String, salary: Double, val department: String) : Employee(name, salary) {
+    override fun displayInfo() {
+        super.displayInfo()
+        println("Department: $department")
+    }
+}
+fun main() {
+    val manager = Manager("Alice", 75000.0, "HR")
+    manager.displayInfo()
+}
+
+Kotlin
+
+class Rectangle(val length: Double, val width: Double) {
+    fun area(): Double {
+        return length * width
+    }
+
+    fun perimeter(): Double {
+        return 2 * (length + width)
+    }
+}
+fun main() {
+    val rectangle = Rectangle(5.0, 3.0)
+    println("Area: ${rectangle.area()}")
+    println("Perimeter: ${rectangle.perimeter()}")
+}
+
+Kotlin 
+
+class BankAccount(var balance: Double) {  
+    fun deposit(amount: Double) {  
+        balance += amount  
+        println("Deposited: $$amount")  
+    }  
+
+    fun withdraw(amount: Double) {  
+        if (amount &lt= balance) {  
+            balance -= amount  
+            println("Withdrew: $$amount")  
+        } else {  
+            println("Insufficient balance")  
+        }  
+    }  
+
+    fun displayBalance() {  
+        println("Current balance: $$balance")  
+    }  
+}
+
+fun main() {  
+    val account = BankAccount(1000.0)  
+    account.deposit(500.0)  
+    account.withdraw(200.0)  
+    account.displayBalance()  
+}
+
+Kotlin:
+
+open class Shape {  
+    open fun area(): Double {  
+        return 0.0  
+    }  
+}  
+
+class Square(val side: Double) : Shape() {  
+    override fun area(): Double {  
+        return side * side  
+    }  
+}  
+
+class Triangle(val base: Double, val height: Double) : Shape() {  
+    override fun area(): Double {  
+        return 0.5 * base * height  
+    }  
+}  
+
+fun main() {  
+    val square = Square(4.0)  
+    val triangle = Triangle(5.0, 6.0)  
+
+    println("Square Area: ${square.area()}")  
+    println("Triangle Area: ${triangle.area()}")  
+}  
+
+Kotlin:
+
+open class Shape {  
+    open fun area(): Double {  
+        return 0.0  
+    }  
+}  
+class Square(val side: Double) : Shape() {  
+    override fun area(): Double {  
+        return side * side  
+    }  
+}  
+class Triangle(val base: Double, val height: Double) : Shape() {  
+    override fun area(): Double {  
+        return 0.5 * base * height  
+    }  
+}  
+fun main() {  
+    val square = Square(4.0)  
+    val triangle = Triangle(5.0, 6.0)  
+
+    println("Square Area: ${square.area()}")  
+    println("Triangle Area: ${triangle.area()}")  
+}  
+      
         </pre>
       
     </div>
