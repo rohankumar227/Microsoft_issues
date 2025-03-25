@@ -457,6 +457,60 @@ fun main() {
     println("Square Area: ${square.area()}")  
     println("Triangle Area: ${triangle.area()}")  
 }  
+      Polymorphism and inheritance:
+
+open class Shape {  
+    open fun area(): Double {  
+        return 0.0  
+    }  
+}  
+
+class Square(val side: Double) : Shape() {  
+    override fun area(): Double {  
+        return side * side  
+    }  
+}  
+class Triangle(val base: Double, val height: Double) : Shape() {  
+    override fun area(): Double {  
+        return 0.5 * base * height  
+    }  
+}  
+fun main() {  
+    val square = Square(4.0)  
+    val triangle = Triangle(5.0, 6.0)  
+
+    println("Square Area: ${square.area()}")  
+    println("Triangle Area: ${triangle.area()}")  
+}  
+
+abstract class:
+
+abstract class Vehicle(val make: String, val model: String) {  
+    abstract fun startEngine(): String  
+    abstract fun stopEngine(): String  
+
+    fun displayInfo() {  
+        println("Make: $make, Model: $model")  
+    }  
+}  
+
+class Car(make: String, model: String) : Vehicle(make, model) {  
+    override fun startEngine(): String {  
+        return "Starting engine of the $make $model car."  
+    }  
+
+    override fun stopEngine(): String {  
+        return "Stopping engine of the $make $model car."  
+    }  
+}  
+
+fun main() {  
+    val car = Car("Toyota", "Corolla")  
+    car.displayInfo()  
+    println(car.startEngine())  
+    println(car.stopEngine())  
+}  
+
       
         </pre>
       
