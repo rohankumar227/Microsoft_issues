@@ -58,16 +58,188 @@
     <div class="code-container">
       <button class="copy-btn" onclick="copyCode(this, 'code1')">Copy</button>
       <pre id="code1">
-int led = 13;
-void setup() {
-    pinMode(led, OUTPUT);
+
+fun main() {
+    print("Enter your percentage: ")
+    val percentage = readLine()!!.toInt()
+    
+    var grade: String
+    
+    if (percentage >= 90) {
+        grade = "A+"
+    } else if (percentage >= 80) {
+        grade = "A"
+    } else if (percentage >= 70) {
+        grade = "B+"
+    } else if (percentage >= 60) {
+        grade = "B"
+    } else if (percentage >= 50) {
+        grade = "C"
+    } else if (percentage >= 40) {
+        grade = "D"
+    } else {
+        grade = "F"
+    }
+    
+    println("Your grade is: $grade")
 }
-void loop() {
-    digitalWrite(led, HIGH); delay(1000);
-    digitalWrite(led, LOW); delay(1000);
+
+fun main() {
+    print("Enter a number: ")
+    val number = readLine()!!.toInt()
+
+    if (number < 0) {
+        println("Factorial is not defined for negative numbers")
+    } else {
+        var factorial = 1
+        for (i in 1..number) {
+            factorial *= i
+        }
+        println("The factorial of $number is $factorial")
+    }
 }
-        </pre
-      >
+
+fun main() {
+    println("Prime numbers between 0 and 100 are:")
+
+    for (num in 2..100) {
+        var isPrime = true
+
+        for (i in 2 until num) {
+            if (num % i == 0) {
+                isPrime = false
+                break
+            }
+        }
+
+        if (isPrime) {
+            print("$num ")
+        }
+    }
+}
+
+
+fun main() {
+    print("Enter the number of terms in the Fibonacci series: ")
+    val terms = readLine()!!.toInt()
+    
+    var first = 0
+    var second = 1
+
+    print("Fibonacci series up to $terms terms: ")
+
+    for (i in 1..terms) {
+        print("$first ")
+        val nextTerm = first + second
+        first = second
+        second = nextTerm
+    }
+}
+
+
+import kotlin.math.pow
+
+fun main() {
+    print("Enter a number: ")
+    val number = readLine()!!.toInt()
+    val originalNumber = number
+    val numberOfDigits = number.toString().length
+    var sum = 0
+    var tempNumber = number
+
+    while (tempNumber > 0) {
+        val digit = tempNumber % 10
+        sum += digit.toDouble().pow(numberOfDigits).toInt()
+        tempNumber /= 10
+    }
+
+    if (sum == originalNumber) {
+        println("$originalNumber is an Armstrong number.")
+    } else {
+        println("$originalNumber is not an Armstrong number.")
+    }
+}
+
+
+fun main() {
+    val array = intArrayOf(1, 2, 3, 4, 5)
+    println("Original Array: ${array.joinToString(", ")}")
+
+    val reversedArray = IntArray(array.size)
+    var j = 0
+
+    for (i in array.size - 1 downTo 0) {
+        reversedArray[j] = array[i]
+        j++
+    }
+
+    println("Reversed Array: ${reversedArray.joinToString(", ")}")
+}
+
+fun main() {
+    val array = intArrayOf(10, 20, 5, 30, 15)
+    var largest = array[0]
+    var smallest = array[0]
+
+    for (element in array) {
+        if (element &gt largest) {
+            largest = element
+        }
+        if (element &lt smallest) {
+            smallest = element
+        }
+    }
+
+    println("Largest element: $largest")
+    println("Smallest element: $smallest")
+}
+
+
+fun main() {
+    val array = intArrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+    var sumOfEvens = 0
+
+    for (element in array) {
+        if (element % 2 == 0) {
+            sumOfEvens += element
+        }
+    }
+
+    println("Sum of even numbers: $sumOfEvens")
+}
+
+fun main() {
+    val array = intArrayOf(1, 2, 3, 4, 2, 5, 2, 6)
+    val eToFind = 2
+    var count = 0
+
+    for (element in array) {
+        if (element == eToFind) {
+            count++
+        }
+    }
+
+    println("The element $eToFind appears $count times in the array.")
+}
+
+fun main() {
+    val array1 = intArrayOf(1, 2, 3, 4)
+    val array2 = intArrayOf(5, 6, 7, 8)
+    val mergedArray = IntArray(array1.size + array2.size)
+
+    for (i in array1.indices) {
+        mergedArray[i] = array1[i]
+    }
+    
+    for (i in array2.indices) {
+        mergedArray[array1.size + i] = array2[i]
+    }
+
+    println("Merged Array: ${mergedArray.joinToString(", ")}")
+}
+          
+        </pre>
+      
     </div>
 
     <h3>Python Code:</h3>
